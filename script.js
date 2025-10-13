@@ -35,6 +35,7 @@ const config = {
   maxDisplacement: 120,
   returnForce: 0.12,
   verticalOffset: -150,
+  minWidth: 1000,
 }
 
 let canvas, gl, program
@@ -43,6 +44,8 @@ let positionArray, colorArray
 let positionBuffer, colorBuffer
 let mouse = { x: 0, y: 0 }
 let animationCount = 0
+let animationFrameId = null
+let isRunning = false
 
 function setupCanvas() {
   canvas = document.getElementById("canvas")
@@ -158,7 +161,10 @@ function createParticles(pixels) {
   positionArray = new Float32Array(positions)
   colorArray = new Float32Array(colors)
   createBuffers()
-  animate()
+
+  if (window.innerWidth >= config.minWidth) {
+    startAnimation()
+  }
 }
 
 function createBuffers() {
@@ -172,9 +178,35 @@ function createBuffers() {
 }
 
 function animate() {
+  if (!isRunning) return
+
   updatePhysics()
   render()
-  requestAnimationFrame(animate)
+  animationFrameId = requestAnimationFrame(animate)
+}
+
+function startAnimation() {
+  if (!isRunning && particles.length > 0) {
+    isRunning = true
+    animate()
+  }
+}
+
+function stopAnimation() {
+  isRunning = false
+  if (animationFrameId) {
+    cancelAnimationFrame(animationFrameId)
+    animationFrameId = null
+  }
+  clearCanvas()
+}
+
+function clearCanvas() {
+  if (gl) {
+    gl.viewport(0, 0, canvas.width, canvas.height)
+    gl.clearColor(0, 0, 0, 0)
+    gl.clear(gl.COLOR_BUFFER_BIT)
+  }
 }
 
 function updatePhysics() {
@@ -286,6 +318,8 @@ function render() {
 
 function setupEvents() {
   document.addEventListener("mousemove", (event) => {
+    if (!isRunning) return
+
     const rect = canvas.getBoundingClientRect()
     const dpr = window.devicePixelRatio || 1
     mouse.x = (event.clientX - rect.left) * dpr
@@ -293,37 +327,19 @@ function setupEvents() {
     animationCount = 300
   })
 
-  //   window.addEventListener("resize", () => {
-  //     setupCanvas()
-
-  //     if (particles.length > 0) {
-  //       const centerX = canvas.width / 2
-  //       const centerY = canvas.height / 2
-  //       const dim = Math.sqrt(particles.length)
-
-  //       for (let i = 0; i < particles.length; i++) {
-  //         const row = Math.floor(i / dim)
-  //         const col = i % dim
-  //         const repositionX = centerX + (col - dim / 2) * 1.0
-  //         const repositionY = centerY + (row - dim / 2) * 1.0
-
-  //         particles[i].originalX = repositionX
-  //         particles[i].originalY = repositionY
-  //         positionArray[i * 2] = repositionX
-  //         positionArray[i * 2 + 1] = repositionY
-  //       }
-
-  //       gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
-  //       gl.bufferSubData(gl.ARRAY_BUFFER, 0, positionArray)
-  //     }
-  //   })
-
   window.addEventListener("resize", () => {
-    setupCanvas()
-    particles = []
-    positionArray = null
-    colorArray = null
-    loadLogo() // 👈 reprocess image and rebuild particles
+    if (window.innerWidth >= config.minWidth) {
+      // Above threshold - reload
+      stopAnimation()
+      setupCanvas()
+      particles = []
+      positionArray = null
+      colorArray = null
+      loadLogo()
+    } else {
+      // Below threshold - stop and clear
+      stopAnimation()
+    }
   })
 }
 
@@ -331,7 +347,11 @@ function init() {
   setupCanvas()
   setupWebGL()
   setupShaders()
-  loadLogo()
+
+  if (window.innerWidth >= config.minWidth) {
+    loadLogo()
+  }
+
   setupEvents()
 }
 
