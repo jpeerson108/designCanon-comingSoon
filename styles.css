@@ -11,12 +11,27 @@
     box-sizing: border-box;
 }
 
+::selection {
+    background-color: #333;
+    color: white;
+}
+
+html,
+body {
+  overflow: hidden;
+}
+
 body {
     background-color: #111;
     color: white;
     font-family: "JetBrains Mono", monospace;
     text-transform: uppercase;
     font-size: var(--font-size);
+}
+
+p {
+    color: #777;
+    pointer-events: none;
 }
 
 nav {
@@ -43,6 +58,11 @@ nav {
 .socials a {
     width: 18px;
     height: 18px;
+    color: #777;
+    transition: color .3s ease;
+}
+
+.socials a:hover {
     color: white;
 }
 
@@ -90,7 +110,7 @@ footer {
     display: flex;
     align-items: center;
     justify-content: right;
-    gap: 14px;
+    gap: 18px;
     top: 30px;
     right: var(--padding-horizontal);
     transform: translateX(0) translateY(-50%);
