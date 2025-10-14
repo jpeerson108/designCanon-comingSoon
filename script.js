@@ -108,6 +108,16 @@ function loadLogo() {
 
 function createParticles(pixels) {
   const dpr = window.devicePixelRatio || 1
+
+  // DEBUG: Log values to understand the issue
+  console.log("=== DEBUG INFO ===")
+  console.log("window.innerWidth:", window.innerWidth)
+  console.log("window.innerHeight:", window.innerHeight)
+  console.log("canvas.width:", canvas.width)
+  console.log("canvas.height:", canvas.height)
+  console.log("DPR:", dpr)
+  console.log("==================")
+
   const centerX = canvas.width / 2
   const centerY = canvas.height / 2
   const positions = []
