@@ -107,6 +107,7 @@ function loadLogo() {
 }
 
 function createParticles(pixels) {
+  const dpr = window.devicePixelRatio || 1
   const centerX = canvas.width / 2
   const centerY = canvas.height / 2
   const positions = []
@@ -125,9 +126,8 @@ function createParticles(pixels) {
 
   const logoTint = hexToRgb(config.logoColor)
 
-  // Use scale for positioning - account for DPR to keep consistent size across displays
-  const dpr = window.devicePixelRatio || 1
-  const scale = 1.0 / dpr
+  // Scale based on viewport, not canvas pixels
+  const scale = dpr
 
   for (let i = 0; i < config.logoSize; i++) {
     for (let j = 0; j < config.logoSize; j++) {
