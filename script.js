@@ -126,8 +126,8 @@ function createParticles(pixels) {
 
   const logoTint = hexToRgb(config.logoColor)
 
-  // Scale based on viewport, not canvas pixels
-  const scale = dpr
+  // Scale should always be 1.0 since we're working in canvas pixel space
+  const scale = 1.0
 
   for (let i = 0; i < config.logoSize; i++) {
     for (let j = 0; j < config.logoSize; j++) {
