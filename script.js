@@ -6,9 +6,9 @@ attribute vec4 a_color;
 varying vec4 v_color;
 void main() {
     vec2 zeroToOne = a_position / u_resolution;
-    vec2 clipSpace = (zeroToOne * 2.0 - 1.0);
+    vec2 clipSpace = zeroToOne * 2.0 - 1.0;
     v_color = a_color;
-    gl_Position = vec4(clipSpace * vec2(1.0, -1.0), 0.0, 1.0);
+    gl_Position = vec4(clipSpace.x, -clipSpace.y, 0.0, 1.0);
     gl_PointSize = 3.5;
 }
 `
@@ -36,6 +36,7 @@ const config = {
   returnForce: 0.12,
   verticalOffset: -150,
   minWidth: 1000,
+  horizontalScale: 1.12, // Adjust this to fix horizontal squishing (try 1.1, 1.2, 1.3, etc.)
 }
 
 let canvas, gl, program
@@ -124,15 +125,19 @@ function createParticles(pixels) {
 
   const logoTint = hexToRgb(config.logoColor)
 
+  // Use scale for positioning
+  const scale = 1.0
+
   for (let i = 0; i < config.logoSize; i++) {
     for (let j = 0; j < config.logoSize; j++) {
       const pixelIndex = (i * config.logoSize + j) * 4
       const alpha = pixels[pixelIndex + 3]
 
       if (alpha > 10) {
-        const particleX = centerX + (j - config.logoSize / 2) * 1.0
+        const particleX =
+          centerX + (j - config.logoSize / 2) * scale * config.horizontalScale
         const particleY =
-          centerY + (i - config.logoSize / 2) * 1.0 + config.verticalOffset
+          centerY + (i - config.logoSize / 2) * scale + config.verticalOffset
 
         positions.push(particleX, particleY)
 
