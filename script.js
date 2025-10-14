@@ -125,8 +125,9 @@ function createParticles(pixels) {
 
   const logoTint = hexToRgb(config.logoColor)
 
-  // Use scale for positioning
-  const scale = 1.0
+  // Use scale for positioning - account for DPR to keep consistent size across displays
+  const dpr = window.devicePixelRatio || 1
+  const scale = 1.0 / dpr
 
   for (let i = 0; i < config.logoSize; i++) {
     for (let j = 0; j < config.logoSize; j++) {
