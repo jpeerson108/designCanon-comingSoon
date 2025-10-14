@@ -36,7 +36,7 @@ const config = {
   returnForce: 0.12,
   verticalOffset: -150,
   minWidth: 1000,
-  horizontalScale: 1.12, // Adjust this to fix horizontal squishing (try 1.1, 1.2, 1.3, etc.)
+  horizontalScale: 1.12,
 }
 
 let canvas, gl, program
