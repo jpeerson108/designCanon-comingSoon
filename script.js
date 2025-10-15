@@ -27,7 +27,7 @@ void main() {
 
 const config = {
   logoPath: "/assets/designCanon-Logo-White.png",
-  logoSize: 500,
+  logoSize: 800,
   targetLogoWidth: 500,
   logoColor: "#ffffff",
   canvasBg: "#111111",
@@ -38,7 +38,6 @@ const config = {
   verticalOffset: -80,
   minWidth: 1000,
   horizontalScale: 1.12,
-  // Target logo size in CSS pixels (not canvas pixels)
 }
 
 let canvas, gl, program
