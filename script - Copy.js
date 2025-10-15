@@ -37,8 +37,6 @@ const config = {
   verticalOffset: -150,
   minWidth: 1000,
   horizontalScale: 1.12,
-  // Target logo size in CSS pixels (not canvas pixels)
-  targetLogoWidth: 800
 }
 
 let canvas, gl, program
@@ -111,6 +109,15 @@ function loadLogo() {
 function createParticles(pixels) {
   const dpr = window.devicePixelRatio || 1
 
+  // DEBUG: Log values to understand the issue
+  console.log("=== DEBUG INFO ===")
+  console.log("window.innerWidth:", window.innerWidth)
+  console.log("window.innerHeight:", window.innerHeight)
+  console.log("canvas.width:", canvas.width)
+  console.log("canvas.height:", canvas.height)
+  console.log("DPR:", dpr)
+  console.log("==================")
+
   const centerX = canvas.width / 2
   const centerY = canvas.height / 2
   const positions = []
@@ -129,9 +136,8 @@ function createParticles(pixels) {
 
   const logoTint = hexToRgb(config.logoColor)
 
-  // Scale to maintain consistent size across different DPR screens
-  // Convert target CSS pixel width to canvas pixels
-  const scale = (config.targetLogoWidth * dpr) / config.logoSize
+  // Scale should always be 1.0 since we're working in canvas pixel space
+  const scale = 1.0
 
   for (let i = 0; i < config.logoSize; i++) {
     for (let j = 0; j < config.logoSize; j++) {
@@ -142,7 +148,7 @@ function createParticles(pixels) {
         const particleX =
           centerX + (j - config.logoSize / 2) * scale * config.horizontalScale
         const particleY =
-          centerY + (i - config.logoSize / 2) * scale + config.verticalOffset * dpr
+          centerY + (i - config.logoSize / 2) * scale + config.verticalOffset
 
         positions.push(particleX, particleY)
 
