@@ -53,15 +53,15 @@ nav {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 20px;
+  gap: 14px;
   top: 30px;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
 }
 
 .socials a {
-  width: 18px;
-  height: 18px;
+  width: 19px;
+  height: 19px;
   color: #777;
   transition: color 0.3s ease;
 }
