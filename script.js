@@ -27,18 +27,18 @@ void main() {
 
 const config = {
   logoPath: "/assets/designCanon-Logo-White.png",
-  logoSize: 900,
+  logoSize: 500,
+  targetLogoWidth: 500,
   logoColor: "#ffffff",
   canvasBg: "#111111",
-  distortionRadius: 3000,
+  distortionRadius: 2000,
   forceStrength: 0.005,
   maxDisplacement: 120,
   returnForce: 0.12,
-  verticalOffset: -150,
+  verticalOffset: -80,
   minWidth: 1000,
   horizontalScale: 1.12,
   // Target logo size in CSS pixels (not canvas pixels)
-  targetLogoWidth: 800
 }
 
 let canvas, gl, program
